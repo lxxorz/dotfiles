@@ -1,18 +1,20 @@
-"         _             
-"__   __ (_)  _ __ ___  
-"\ \ / / | | | '_ ` _ \ 
-" \ V /  | | | | | | | |
-"  \_/   |_| |_| |_| |_|
-"                       
 
-let mapleader=" "
-let maplocalleader="," 
+" __     __  ___   __  __ 
+" \ \   / / |_ _| |  \/  |
+"  \ \ / /   | |  | |\/| |
+"   \ V /    | |  | |  | |
+"    \_/    |___| |_|  |_|
+                       
+
+let g:mapleader=" "
+let g:maplocalleader="," 
 noremap <leader>w :w<cr>
 noremap <leader>q :q<cr>
 
 set guicursor=n-v-c-i:hor20,ci-ve:ver25,r-cr:hor20,o:hor50
 			\,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
 			\,sm:block-blinkwait175-blinkoff150-blinkon175
+
 " hi NonText cterm=NONE ctermfg=NONE
 set history=1000
 set noerrorbells
@@ -27,10 +29,11 @@ set rnu
 set ignorecase
 set noswapfile
 set incsearch
+
 noremap K <nop>
+
 " new line indent automatically
 set autoindent
-" set smartindent
 
 " using system clipboard
 if has('nvim')
@@ -38,20 +41,18 @@ if has('nvim')
 endif
 
 " window split
-noremap <leader>sp :split<CR>	
-noremap <leader>vsp :vsplit<CR>
 noremap <c-h> <c-w>h 
 noremap <c-j> <c-w>j
 noremap <c-k> <c-w>k
 noremap <c-l> <c-w>l
-noremap <leader>sv :source $MYVIMRC<CR>
-noremap <leader>esv :vsplit $MYVIMRC<CR>
+noremap <localleader>mv :e $MYVIMRC<CR>
 
 
 " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
+" On-demand lazy load
 
 if has('nvim')
 	Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -63,7 +64,12 @@ endif
 
 Plug 'junegunn/fzf.vim'
 
+" ranger
+" Plug 'rbgrouleff/bclose.vim'
+" Plug 'francoiscabrol/ranger.vim'
+
 " Plug 'pangloss/vim-javascript'
+" Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 
 Plug 'glepnir/dashboard-nvim'
 
@@ -72,6 +78,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 Plug 'arcticicestudio/nord-vim'
+
+Plug 'joshdick/onedark.vim'
 
 Plug 'sirver/ultisnips'
 
@@ -107,14 +115,17 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 
 Plug 'jiangmiao/auto-pairs'
+
 Plug 'voldikss/vim-translator'
+
+Plug 'mattn/emmet-vim'
 
 Plug 'turbio/bracey.vim', {'do': 'npm install --prefix server'}
 call plug#end()
 
 "------------------ coc.nvim ------------------
 
-let g:coc_global_extensions=['coc-docthis', 'coc-todolist' , 'coc-marketplace', 'coc-tsserver',  'coc-word', 'coc-ultisnips', 'coc-sql', 'coc-pyright', 'coc-emmet' , 'coc-yank' , 'coc-json', 'coc-git']
+let g:coc_global_extensions=['coc-vetur', 'coc-vimlsp', 'coc-markdownlint', 'coc-css', 'coc-eslint', 'coc-docthis' , 'coc-marketplace', 'coc-tsserver',  'coc-word', 'coc-ultisnips', 'coc-pyright', 'coc-yank' , 'coc-json', 'coc-git']
 
 " TextEdit might fail if hidden is not set.
 set hidden
@@ -259,7 +270,7 @@ nnoremap <silent><nowait> ,k  :<C-u>CocPrev<CR>
 nnoremap <silent><nowait> ,p  :<C-u>CocListResume<CR>
 
 "------------------ file-explorer ------------------
-nmap <leader>d :terminal ranger<CR>i
+" nmap <leader>d :terminal ranger<CR>i
 
 "------------------ color scheme ------------------
 let g:gruvbox_contrast_light='soft'
@@ -293,7 +304,7 @@ let g:vimtex_compiler_latexmk_engines = {
 
 "------------------ ultisnips ------------------
 " note that if map <tab> will conflict with coc.nvim “
-let g:UltiSnipsExpandTrigger = '<c-l>'
+let g:UltiSnipsExpandTrigger = '<c-p>'
 let g:UltiSnipsJumpForwardTrigger = '<c-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
 
@@ -384,77 +395,63 @@ nmap <leader>tl :CocList todolist<CR>
 " JSdoc
 nmap <leader>jd :CocCommand docthis.documentThis<CR>
 
-
-
-"------------------ defx.nvim ------------------
-
-autocmd FileType defx call s:defx_my_settings()
-function! s:defx_my_settings() abort
-	" Define mappings
-	nnoremap <silent><buffer><expr> <CR>
-				\ defx#do_action('open')
-	nnoremap <silent><buffer><expr> c
-				\ defx#do_action('copy')
-	nnoremap <silent><buffer><expr> m
-				\ defx#do_action('move')
-	nnoremap <silent><buffer><expr> p
-				\ defx#do_action('paste')
-	nnoremap <silent><buffer><expr> l
-				\ defx#do_action('open')
-	nnoremap <silent><buffer><expr> E
-				\ defx#do_action('open', 'vsplit')
-	nnoremap <silent><buffer><expr> P
-				\ defx#do_action('preview')
-	nnoremap <silent><buffer><expr> o
-				\ defx#do_action('open_tree', 'toggle')
-	nnoremap <silent><buffer><expr> K
-				\ defx#do_action('new_directory')
-	nnoremap <silent><buffer><expr> N
-				\ defx#do_action('new_file')
-	nnoremap <silent><buffer><expr> M
-				\ defx#do_action('new_multiple_files')
-	nnoremap <silent><buffer><expr> C
-				\ defx#do_action('toggle_columns',
-				\                'mark:indent:icon:filename:type:size:time')
-	nnoremap <silent><buffer><expr> S
-				\ defx#do_action('toggle_sort', 'time')
-	nnoremap <silent><buffer><expr> d
-				\ defx#do_action('remove')
-	nnoremap <silent><buffer><expr> r
-				\ defx#do_action('rename')
-	nnoremap <silent><buffer><expr> !
-				\ defx#do_action('execute_command')
-	nnoremap <silent><buffer><expr> x
-				\ defx#do_action('execute_system')
-	nnoremap <silent><buffer><expr> yy
-				\ defx#do_action('yank_path')
-	nnoremap <silent><buffer><expr> .
-				\ defx#do_action('toggle_ignored_files')
-	nnoremap <silent><buffer><expr> ;
-				\ defx#do_action('repeat')
-	nnoremap <silent><buffer><expr> h
-				\ defx#do_action('cd', ['..'])
-	nnoremap <silent><buffer><expr> ~
-				\ defx#do_action('cd')
-	nnoremap <silent><buffer><expr> q
-				\ defx#do_action('quit')
-	nnoremap <silent><buffer><expr> <Space>
-				\ defx#do_action('toggle_select') . 'j'
-	nnoremap <silent><buffer><expr> *
-				\ defx#do_action('toggle_select_all')
-	nnoremap <silent><buffer><expr> j
-				\ line('.') == line('$') ? 'gg' : 'j'
-	nnoremap <silent><buffer><expr> k
-				\ line('.') == 1 ? 'G' : 'k'
-	nnoremap <silent><buffer><expr> <C-l>
-				\ defx#do_action('redraw')
-	nnoremap <silent><buffer><expr> <C-g>
-				\ defx#do_action('print')
-	nnoremap <silent><buffer><expr> cd
-				\ defx#do_action('change_vim_cwd')
-endfunction
-nnoremap <silent><leader>d :Defx -listed -split=floating -floating-preview -auto-cd -vertical-preview -toggle  -preview-width=40 -preview-height=40<CR>
-
-
 "------------------ colorscheme ------------------
-colorscheme nord
+colorscheme onedark
+
+"------------------ coc-git ------------------
+" navigate chunks of current buffer
+nmap [g <Plug>(coc-git-prevchunk)
+nmap ]g <Plug>(coc-git-nextchunk)
+" navigate conflicts of current buffer
+nmap [c <Plug>(coc-git-prevconflict)
+nmap ]c <Plug>(coc-git-nextconflict)
+" show chunk diff at current position
+" nmap gs <Plug>(coc-git-chunkinfo)
+" show commit contains current position
+" nmap gc <Plug>(coc-git-commit)
+" create text object for git chunks
+omap ig <Plug>(coc-git-chunk-inner)
+xmap ig <Plug>(coc-git-chunk-inner)
+omap ag <Plug>(coc-git-chunk-outer)
+xmap ag <Plug>(coc-git-chunk-outer)
+
+"------------------ vim-emmet ------------------
+let g:user_emmet_install_global=0
+autocmd FileType html,css,vue EmmetInstall
+let g:user_emmet_leader_key='<c-l>'
+
+
+"------------------ defx ------------------
+
+" 使用 ;e 切换显示文件浏览，使用 ;a 查找到当前文件位置
+nnoremap <silent> <LocalLeader>e
+\ :<C-u>Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>
+nnoremap <silent> <LocalLeader>a
+\ :<C-u>Defx -resume -buffer-name=tab`tabpagenr()` -search=`expand('%:p')`<CR>
+
+function! s:defx_mappings() abort
+	" Defx window keyboard mappings
+	setlocal signcolumn=no
+	" 使用回车打开文件
+	nnoremap <silent><buffer><expr> <CR> defx#do_action('multi', ['drop'])
+endfunction
+
+call defx#custom#option('_', {
+	\ 'columns': 'indent:git:icons:filename',
+	\ 'winwidth': 25,
+	\ 'split': 'vertical',
+	\ 'direction': 'topleft',
+	\ 'listed': 1,
+	\ 'show_ignored_files': 0,
+	\ 'root_marker': '≡ ',
+	\ 'ignored_files':
+	\     '.mypy_cache,.pytest_cache,.git,.hg,.svn,.stversions'
+	\   . ',__pycache__,.sass-cache,*.egg-info,.DS_Store,*.pyc,*.swp'
+	\ })
+
+autocmd FileType defx call s:defx_mappings()
+
+
+"------------------ chatree ------------------
+nnoremap <leader>l <cmd>call setqflist([])<cr>
+
