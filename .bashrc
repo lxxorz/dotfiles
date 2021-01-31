@@ -150,7 +150,7 @@ export RANGER_LOAD_DEFAULT_RC=False
 export EDITOR='/usr/bin/nvim'
 
 # export LANG='zh_CN.UTF-8'
-export http_proxy="http://localhost:8889"
+# export http_proxy="http://localhost:8889"
 # export socks_proxy="socks5://localhost:1089"
 wmname LG3D 
 

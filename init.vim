@@ -6,14 +6,12 @@
 "    \_/    |___| |_|  |_|
                        
 
-let g:mapleader=" "
+let g:mapleader="\<space>"
 let g:maplocalleader="," 
+
 noremap <leader>w :w<cr>
 noremap <leader>q :q<cr>
 
-set guicursor=n-v-c-i:hor20,ci-ve:ver25,r-cr:hor20,o:hor50
-			\,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
-			\,sm:block-blinkwait175-blinkoff150-blinkon175
 
 " hi NonText cterm=NONE ctermfg=NONE
 set history=1000
@@ -29,8 +27,7 @@ set rnu
 set ignorecase
 set noswapfile
 set incsearch
-
-noremap K <nop>
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " new line indent automatically
 set autoindent
@@ -52,80 +49,53 @@ noremap <localleader>mv :e $MYVIMRC<CR>
 " - For Neovim: stdpath('data') . '/plugged'
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
-" On-demand lazy load
-
-if has('nvim')
-	Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-	Plug 'Shougo/defx.nvim'
-	Plug 'roxma/nvim-yarp'
-	Plug 'roxma/vim-hug-neovim-rpc'
-endif
-
-Plug 'junegunn/fzf.vim'
-
-" ranger
-" Plug 'rbgrouleff/bclose.vim'
-" Plug 'francoiscabrol/ranger.vim'
-
-" Plug 'pangloss/vim-javascript'
-" Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
-
-Plug 'glepnir/dashboard-nvim'
-
-Plug 'vim-airline/vim-airline'
-
-Plug 'vim-airline/vim-airline-themes'
-
-Plug 'arcticicestudio/nord-vim'
-
-Plug 'joshdick/onedark.vim'
-
-Plug 'sirver/ultisnips'
-
-Plug 'junegunn/vim-easy-align'
-
+" docs
 Plug 'yianwillis/vimcdoc'
 
-Plug 'honza/vim-snippets'
+" On-demand lazy load
+Plug 'junegunn/fzf.vim'
+Plug 'glepnir/dashboard-nvim'
 
-Plug 'lervag/vimtex'
+"statusline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-Plug 'easymotion/vim-easymotion'
-
-
-
-" " Initialize plugin system
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" " choose text-object when you keydown <enter>
-Plug 'gcmt/wildfire.vim'
-
-" " themes
-" Plug 'dracula/vim'
-" Plug 'NLKNguyen/papercolor-theme'
+"colorscheme
+Plug 'arcticicestudio/nord-vim'
+Plug 'joshdick/onedark.vim'
+Plug 'sirver/ultisnips'
+Plug 'dracula/vim'
 Plug 'morhetz/gruvbox'
+Plug 'NLKNguyen/papercolor-theme'
 
-" " makrdown preview
-" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-
-" " commentary
-Plug 'tpope/vim-surround'
-"Plug 'preservim/nerdcommenter'
-Plug 'tpope/vim-commentary'
-
+"edit
+Plug 'AndrewRadev/inline_edit.vim'
+Plug 'easymotion/vim-easymotion'
 Plug 'jiangmiao/auto-pairs'
+Plug 'gcmt/wildfire.vim' "choose text object
+Plug 'junegunn/vim-easy-align'
 
-Plug 'voldikss/vim-translator'
-
+"language support
+Plug 'leafOfTree/vim-vue-plugin'
+Plug 'othree/xml.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'honza/vim-snippets'
+Plug 'lervag/vimtex'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'mattn/emmet-vim'
-
 Plug 'turbio/bracey.vim', {'do': 'npm install --prefix server'}
+
+"commentary
+Plug 'tpope/vim-surround'
+Plug 'tomtom/tcomment_vim'
+
+"translate
+Plug 'voldikss/vim-translator'
 call plug#end()
 
 "------------------ coc.nvim ------------------
 
-let g:coc_global_extensions=['coc-vetur', 'coc-vimlsp', 'coc-markdownlint', 'coc-css', 'coc-eslint', 'coc-docthis' , 'coc-marketplace', 'coc-tsserver',  'coc-word', 'coc-ultisnips', 'coc-pyright', 'coc-yank' , 'coc-json', 'coc-git']
+let g:coc_global_extensions=[ 'coc-vetur', 'coc-vimlsp', 'coc-markdownlint', 'coc-css', 'coc-eslint', 'coc-docthis' , 'coc-marketplace', 'coc-tsserver',  'coc-word', 'coc-ultisnips', 'coc-pyright', 'coc-yank' , 'coc-json', 'coc-git']
 
 " TextEdit might fail if hidden is not set.
 set hidden
@@ -167,11 +137,6 @@ else
 	inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-			\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -210,35 +175,6 @@ nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-" nmap <leader>qf  <Plug>(coc-fix-current)
-
-" Map function and class text objects
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-
-" Remap <C-f> and <C-b> for scroll float windows/popups.
-if has('nvim-0.4.0') || has('patch-8.2.0750')
-	nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-	nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-	inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-	inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-	vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-	vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-endif
-
-" Use CTRL-S for selections ranges.
-" Requires 'textDocument/selectionRange' support of language server.
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
-
 
 " Add `:Fold` command to fold current buffer.
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
@@ -252,8 +188,6 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings for CoCList
-" Show all diagnostics.
-nnoremap <silent><nowait> ,a  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
 nnoremap <silent><nowait> ,e  :<C-u>CocList extensions<cr>
 " Show commands.
@@ -262,15 +196,15 @@ nnoremap <silent><nowait> ,c  :<C-u>CocList commands<cr>
 nnoremap <silent><nowait> ,o  :<C-u>CocList outline<cr>
 " Search workspace symbols.
 nnoremap <silent><nowait> ,s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent><nowait> ,j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent><nowait> ,k  :<C-u>CocPrev<CR>
-" Resume latest coc list.
-nnoremap <silent><nowait> ,p  :<C-u>CocListResume<CR>
+" " Show all diagnostics.
+" nnoremap <silent><nowait> ,a  :<C-u>CocList diagnostics<cr>
+" " Do default action for next item.
+" nnoremap <silent><nowait> ,j  :<C-u>CocNext<CR>
+" " Do default action for previous item.
+" nnoremap <silent><nowait> ,k  :<C-u>CocPrev<CR>
+" " Resume latest coc list.
+" nnoremap <silent><nowait> ,p  :<C-u>CocListResume<CR>
 
-"------------------ file-explorer ------------------
-" nmap <leader>d :terminal ranger<CR>i
 
 "------------------ color scheme ------------------
 let g:gruvbox_contrast_light='soft'
@@ -304,7 +238,7 @@ let g:vimtex_compiler_latexmk_engines = {
 
 "------------------ ultisnips ------------------
 " note that if map <tab> will conflict with coc.nvim “
-let g:UltiSnipsExpandTrigger = '<c-p>'
+let g:UltiSnipsExpandTrigger = '<c-l>'
 let g:UltiSnipsJumpForwardTrigger = '<c-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
 
@@ -318,14 +252,11 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-
-" coc-yank
+"------------------ coc-yank ------------------
 nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
 
-" easy motion
+"------------------ easy motion ------------------
 nmap ss <Plug>(easymotion-overwin-f2)
-
-
 
 "------------------ dashboard ------------------
 let g:dashboard_default_executive ='fzf'
@@ -357,7 +288,6 @@ let g:dashboard_custom_shortcut['change_colorscheme'] = 'SPC t c'
 let g:dashboard_custom_shortcut['new_file'] = 'SPC c n'
 let g:dashboard_custom_shortcut['find_word'] = 'SPC f a'
 let g:dashboard_custom_shortcut['book_marks'] = 'SPC f b'
-
 let g:dashboard_custom_header=[
 			\' ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡴⣪⣭⣿⣷⣶⣄⠀⠀⠀⠀⠀⠀⠀⠀ ',
 			\' ⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⠤⢤⢔⡾⣹⣿⣿⣿⣿⣿⣿⣷⡄⠀⠀⠀⠀⠀⠀ ',
@@ -402,56 +332,27 @@ colorscheme onedark
 " navigate chunks of current buffer
 nmap [g <Plug>(coc-git-prevchunk)
 nmap ]g <Plug>(coc-git-nextchunk)
+
 " navigate conflicts of current buffer
 nmap [c <Plug>(coc-git-prevconflict)
 nmap ]c <Plug>(coc-git-nextconflict)
-" show chunk diff at current position
-" nmap gs <Plug>(coc-git-chunkinfo)
-" show commit contains current position
-" nmap gc <Plug>(coc-git-commit)
-" create text object for git chunks
-omap ig <Plug>(coc-git-chunk-inner)
-xmap ig <Plug>(coc-git-chunk-inner)
-omap ag <Plug>(coc-git-chunk-outer)
-xmap ag <Plug>(coc-git-chunk-outer)
 
 "------------------ vim-emmet ------------------
 let g:user_emmet_install_global=0
-autocmd FileType html,css,vue EmmetInstall
-let g:user_emmet_leader_key='<c-l>'
+autocmd FileType markdown,html,css,vue EmmetInstall
+let g:user_emmet_leader_key='<c-y>'
 
+"------------------ bracey ------------------
+autocmd FileType html noremap <localleader>p :Bracey<CR>
 
-"------------------ defx ------------------
+"------------------ inline_edit ------------------
+"original buffer will be saved as well.
+let g:inline_edit_autowrite=1
+noremap <localleader>i :InlineEdit<CR>
+let g:inline_edit_new_buffer_command = "topleft vertical new"
 
-" 使用 ;e 切换显示文件浏览，使用 ;a 查找到当前文件位置
-nnoremap <silent> <LocalLeader>e
-\ :<C-u>Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>
-nnoremap <silent> <LocalLeader>a
-\ :<C-u>Defx -resume -buffer-name=tab`tabpagenr()` -search=`expand('%:p')`<CR>
-
-function! s:defx_mappings() abort
-	" Defx window keyboard mappings
-	setlocal signcolumn=no
-	" 使用回车打开文件
-	nnoremap <silent><buffer><expr> <CR> defx#do_action('multi', ['drop'])
-endfunction
-
-call defx#custom#option('_', {
-	\ 'columns': 'indent:git:icons:filename',
-	\ 'winwidth': 25,
-	\ 'split': 'vertical',
-	\ 'direction': 'topleft',
-	\ 'listed': 1,
-	\ 'show_ignored_files': 0,
-	\ 'root_marker': '≡ ',
-	\ 'ignored_files':
-	\     '.mypy_cache,.pytest_cache,.git,.hg,.svn,.stversions'
-	\   . ',__pycache__,.sass-cache,*.egg-info,.DS_Store,*.pyc,*.swp'
-	\ })
-
-autocmd FileType defx call s:defx_mappings()
-
-
-"------------------ chatree ------------------
-nnoremap <leader>l <cmd>call setqflist([])<cr>
-
+"------------------ markdown preview  ------------------
+"recognized filetypes
+"these filetypes will have MarkdownPreview... commands
+let g:mkdp_filetypes = ['markdown']
+nmap <C-p> <Plug>MarkdownPreviewToggle
