@@ -49,6 +49,10 @@ noremap <localleader>mv :e $MYVIMRC<CR>
 " - For Neovim: stdpath('data') . '/plugged'
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
+" Run commands in the background (Asyncrun breaks vim-surround)
+" for case one
+Plug 'tpope/vim-dispatch'
+
 " docs
 Plug 'yianwillis/vimcdoc'
 
@@ -352,7 +356,9 @@ noremap <localleader>i :InlineEdit<CR>
 let g:inline_edit_new_buffer_command = "topleft vertical new"
 
 "------------------ markdown preview  ------------------
-"recognized filetypes
-"these filetypes will have MarkdownPreview... commands
-let g:mkdp_filetypes = ['markdown']
-nmap <C-p> <Plug>MarkdownPreviewToggle
+function! g:Open_browser(url)
+    exec "Spawn! google-chrome-unstable --app=" . a:url
+endfunction
+let g:mkdp_browserfunc = 'g:Open_browser'
+
+autocmd FIleType markdown nmap <c-p> <Plug>MarkdownPreviewToggle
